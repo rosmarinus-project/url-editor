@@ -1,0 +1,54 @@
+{
+  "name": "url-editor",
+  "version": "1.0.3",
+  "description": "chrome extension for editing url",
+  "scripts": {
+    "build": "pnpm build:console",
+    "build:chrome": "nx run-many --target=build:release --all && pnpm run build:dist && pnpm run zip",
+    "build:console": "nx run-many --target=build --all && pnpm run build:dist && pnpm run zip",
+    "start": "pnpm exec nx dev",
+    "release": "gulp release && pnpm build:chrome",
+    "build:dist": "gulp build",
+    "zip": "gulp zip",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rosmarinus-project/url-editor.git"
+  },
+  "keywords": [
+    "chrome",
+    "extension",
+    "url"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "tslib": "^2.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.5",
+    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-typescript": "^7.16.7",
+    "@babel/register": "^7.22.15",
+    "@inquirer/prompts": "^3.3.0",
+    "@nx/js": "^19.0.7",
+    "@nx/workspace": "^19.0.7",
+    "@rosmarinus/eslint-config-rosmarinus": "^1.0.6",
+    "@types/archiver": "^6.0.2",
+    "@types/conventional-changelog": "^3.1.5",
+    "@types/fs-extra": "^11.0.4",
+    "@types/gulp": "^4.0.17",
+    "@types/node": "^18.14.0",
+    "@types/semver": "^7.5.6",
+    "archiver": "^6.0.1",
+    "conventional-changelog": "^5.1.0",
+    "fs-extra": "^11.1.1",
+    "gulp": "^4.0.2",
+    "husky": "^8.0.3",
+    "nx": "19.0.6",
+    "rimraf": "^5.0.5",
+    "semver": "^7.5.4",
+    "typescript": "^5.2.2"
+  },
+  "packageManager": "pnpm@9.1.2"
+}

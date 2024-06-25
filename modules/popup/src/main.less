@@ -1,0 +1,28 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  line-height: normal;
+  @apply c-token-lm;
+  @apply c-token-spacing;
+  @apply c-token-font;
+  min-width: 600px;
+}
+
+
+// 自动切换
+@media (prefers-color-scheme: dark) {
+  body {
+    @apply c-token-dm;
+  }
+}
+
+// manual change
+body[data-theme='dark'] {
+  @apply c-token-dm;
+}
+
+body[data-theme='light'] {
+  @apply c-token-lm;
+}

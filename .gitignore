@@ -1,0 +1,14 @@
+node_modules
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+reports
+/.vscode/launch.json
+/.npmrc
+/dist
+/coverage
+/reports
+/modules/*/dist
+/zip
+/dist.crx
+/.nx
