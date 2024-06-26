@@ -10,6 +10,7 @@
     "preview": "cross-env NODE_ENV=production vite preview"
   },
   "dependencies": {
+    "@rosmarinus/common-utils": "^3.1.0",
     "common": "workspace:*",
     "tdesign-icons-vue-next": "^0.2.2",
     "tdesign-vue-next": "^1.9.6",

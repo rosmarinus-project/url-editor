@@ -1,37 +1,38 @@
 <template>
   <div class="flex flex-col">
-    <div class="grid grid-cols-2 gap-x-8 gap-y-8 mb-4">
+    <div class="grid grid-cols-2 gap-x-8 gap-y-8">
       <template v-for="(kv, i) in kvList" :key="i">
         <div class="flex items-center gap-4">
-          <LockOnIcon
-            class="shrink-0"
-            size="20"
-            :style="{ color: kv.lockType === configProto.LockType.Locked ? 'red' : undefined }"
-            @click="onClickLock(kv)"
-          />
-          <PinIcon
-            class="shrink-0"
-            size="20"
-            :style="{ color: kv.lockType === configProto.LockType.Pinned ? 'blue' : undefined }"
-            @click="onClickPin(kv)"
-          />
-          <Input v-model="kv.key" class="min-w-0" />
+          <div class="shrink-0 c-active-cover" @click="onClickLock(kv)">
+            <UserLockedIcon v-if="kv.lockType === configProto.LockType.Locked" size="20" class="text-fg-0" />
+            <UserUnlockedIcon v-else size="20" class="text-fg-1" />
+          </div>
+          <div class="shrink-0 c-active-cover" @click="onClickPin(kv)">
+            <LockOnIcon v-if="kv.lockType === configProto.LockType.Pinned" size="20" class="text-fg-0" />
+            <LockOffIcon v-else size="20" class="text-fg-1" />
+          </div>
+          <Input v-model="kv.key" class="min-w-0 text-fg-0" placeholder="input key..." />
         </div>
         <div class="flex items-center">
-          <Input v-model="kv.value" class="min-w-0" />
-          <MinusCircleIcon class="ml-4 shrink-0" size="20" @click="onDeleteKv(kv)" />
+          <Input v-model="kv.value" class="min-w-0" placeholder="input value..." />
+          <div class="ml-4 shrink-0 c-active-cover" @click="onDeleteKv(kv)">
+            <MinusCircleIcon size="20" class="text-fg-0" />
+          </div>
         </div>
       </template>
     </div>
-    <AddCircleIcon class="c-active-brand-02 self-end mb-8" size="20" @click="onClickAdd" />
-    <Button class="self-end" @click="onClickSubmit">Submit</Button>
+    <div class="self-end flex gap-8 mt-16">
+      <Button @click="onClickAdd">Add</Button>
+      <Button theme="success" @click="onClickSubmit">Reload</Button>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { watch, ref } from 'vue';
 import { Input, Button } from 'tdesign-vue-next';
-import { AddCircleIcon, MinusCircleIcon, PinIcon, LockOnIcon } from 'tdesign-icons-vue-next';
+import { MinusCircleIcon, LockOnIcon, LockOffIcon, UserLockedIcon, UserUnlockedIcon } from 'tdesign-icons-vue-next';
 import { configProto } from 'common';
+import { mergeKVListInto, kvListToRecord } from '@rosmarinus/common-utils';
 
 const props = defineProps<{ kvItemList: configProto.ParamKV[] }>();
 const emit = defineEmits<{
@@ -44,19 +45,16 @@ const kvList = ref<configProto.ParamKV[]>([]);
 watch(
   () => props.kvItemList,
   () => {
-    kvList.value = props.kvItemList;
+    kvList.value = mergeKVListInto(props.kvItemList, kvList.value, (oldItem, newItem) => ({
+      ...newItem,
+      value: oldItem.value,
+    }));
   },
   { immediate: true },
 );
 
 function onClickSubmit() {
-  const params = kvList.value.reduce<Record<string, string>>((acc, { key, value }) => {
-    acc[key] = value;
-
-    return acc;
-  }, {});
-
-  emit('submit', params);
+  emit('submit', kvListToRecord(kvList.value));
 }
 
 function onClickAdd() {

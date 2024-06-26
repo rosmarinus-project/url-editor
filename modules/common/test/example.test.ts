@@ -1,11 +1,11 @@
 import { describe, beforeEach, afterEach, test, expect } from '@jest/globals';
 
-describe('样例', () => {
+describe('example', () => {
   beforeEach(() => {});
 
   afterEach(() => {});
 
-  test('样例', () => {
+  test('case 1', () => {
     expect(1 + 1).toBe(2);
   });
 });

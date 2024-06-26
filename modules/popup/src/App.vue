@@ -14,29 +14,24 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, computed } from 'vue';
+import { ref, onMounted, onUnmounted, computed, watch } from 'vue';
+import {
+  stringifyURLSearchParams,
+  parseURLSearchParams,
+  recordToKVList,
+  addKVToList,
+  removeKVFromList,
+} from '@rosmarinus/common-utils';
 import { tabUrlApi, configProto, configApi } from 'common';
 import Empty from './widgets/Empty.vue';
 import Path from './widgets/Path.vue';
 import Params from './widgets/Params.vue';
 
 const tab = ref<chrome.tabs.Tab | undefined>();
+const path = ref('');
+const params = ref<Record<string, string>>({});
 const config = ref<configProto.Config | undefined>();
 const dispose = ref<(() => void) | undefined>();
-
-const path = computed(() => {
-  const url = tab.value?.url;
-
-  if (!url) {
-    return '';
-  }
-
-  try {
-    return url.split('?')[0];
-  } catch (e) {
-    return '';
-  }
-});
 
 const kvList = computed(() => {
   const url = tab.value?.url;
@@ -45,86 +40,95 @@ const kvList = computed(() => {
     return [];
   }
 
-  try {
-    const search = url.split('?')[1];
+  const list = recordToKVList(params.value, (kvItem) => {
+    const lockType = (() => {
+      const tabLockList = config.value?.tabLockMap?.[path.value] || [];
+      const tabPinList = config.value?.tabPinMap?.[tab.value?.id || -1] || [];
 
-    if (!search) {
-      return [];
-    }
+      if (tabLockList.some((kv) => kv.key === kvItem.key)) {
+        return configProto.LockType.Locked;
+      }
 
-    return Object.entries(Object.fromEntries(new URLSearchParams(search))).reduce((acc, [key, value]) => {
-      const lockType = (() => {
-        const tabLockList = config.value?.tabLockMap?.[path.value] || [];
-        const tabPinList = config.value?.tabPinMap?.[tab.value?.id || -1] || [];
+      if (tabPinList.some((kv) => kv.key === kvItem.key)) {
+        return configProto.LockType.Pinned;
+      }
 
-        if (tabLockList.some((kv) => kv.key === key)) {
-          return configProto.LockType.Locked;
-        }
+      return configProto.LockType.None;
+    })();
 
-        if (tabPinList.some((kv) => kv.key === key)) {
-          return configProto.LockType.Pinned;
-        }
+    return { ...kvItem, lockType };
+  });
 
-        return configProto.LockType.None;
-      })();
-
-      acc.push({ key, value, lockType });
-
-      return acc;
-    }, [] as configProto.ParamKV[]);
-  } catch (e) {
-    return [];
-  }
+  return list;
 });
 
 function onSubmitParamsChange(params: Record<string, string>) {
-  const search = new URLSearchParams(params).toString();
-  const url = Object.keys(search) ? `${path.value}?${search}` : path.value;
+  const url = stringifyURLSearchParams(path.value, params);
   const tabId = tab.value?.id;
 
   if (tabId) {
     chrome.tabs.update(tabId, { url });
   }
+
+  window.close();
 }
 
 function onKVLockTypeChange(kv: configProto.ParamKV) {
-  configApi.emitConfigChange({
+  const pinKvList = (() => {
+    const list = config.value?.tabPinMap?.[tab.value?.id || -1] ?? [];
+
+    if (kv.lockType === configProto.LockType.Pinned) {
+      return addKVToList(list, kv);
+    }
+
+    return removeKVFromList(list, kv);
+  })();
+
+  const lockKvList = (() => {
+    const list = config.value?.tabLockMap?.[path.value] ?? [];
+
+    if (kv.lockType === configProto.LockType.Locked) {
+      return addKVToList(list, kv);
+    }
+
+    return removeKVFromList(list, kv);
+  })();
+
+  const tabId = tab.value?.id ?? -1;
+
+  params.value[kv.key] = kv.value;
+  config.value = {
+    ...config.value,
     tabPinMap: {
-      [tab.value?.id || -1]: (() => {
-        const list = config.value?.tabPinMap?.[tab.value?.id || -1] ?? [];
-
-        if (kv.lockType === configProto.LockType.Pinned && !list?.includes(kv)) {
-          list.push(kv);
-        }
-
-        return list.filter((kvItem) => {
-          if (kv.lockType !== configProto.LockType.Pinned && kvItem === kv) {
-            return false;
-          }
-
-          return true;
-        });
-      })(),
+      ...config.value?.tabPinMap,
+      [tabId]: pinKvList,
     },
     tabLockMap: {
-      [path.value]: (() => {
-        const list = config.value?.tabLockMap?.[path.value] ?? [];
+      ...config.value?.tabLockMap,
+      [path.value]: lockKvList,
+    },
+  };
 
-        if (kv.lockType === configProto.LockType.Locked && !list?.includes(kv)) {
-          list.push(kv);
-        }
-
-        return list.filter((kvItem) => {
-          if (kv.lockType !== configProto.LockType.Locked && kvItem === kv) {
-            return false;
-          }
-
-          return true;
-        });
-      })(),
+  configApi.emitConfigChange({
+    tabPinMap: {
+      [tabId]: pinKvList,
+    },
+    tabLockMap: {
+      [path.value]: lockKvList,
     },
   });
 }
+
+watch(
+  () => tab.value,
+  () => {
+    const [urlPath, urlParams] = parseURLSearchParams(tab.value?.url || '');
+
+    path.value = urlPath;
+    params.value = urlParams;
+  },
+  { immediate: true },
+);
 
 onMounted(async () => {
   tab.value = (await tabUrlApi.getActivatedTabInfo({}))?.tab;

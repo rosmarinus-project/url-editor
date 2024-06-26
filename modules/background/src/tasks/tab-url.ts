@@ -1,5 +1,5 @@
-import { hookAsyncData } from '@rosmarinus/common-utils';
-import { tabUrlApi, storage, configApi } from 'common';
+import { hookAsyncData, parseURLSearchParams, stringifyURLSearchParams } from '@rosmarinus/common-utils';
+import { tabUrlApi, storage, configApi, configProto } from 'common';
 import type { TabChangeInfo } from '../types';
 
 // eslint-disable-next-line max-lines-per-function
@@ -24,7 +24,16 @@ export function initTabUrlListener() {
     {
       afterUpdate(data) {
         storage.setSyncConfig({
-          tabLockMap: data?.tabLockMap,
+          tabLockMap: Object.keys(data?.tabLockMap || {}).reduce<configProto.Config['tabLockMap']>((acc, key) => {
+            const obj = acc || {};
+            const val = data?.tabLockMap?.[key];
+
+            if (val?.length) {
+              obj[key] = val;
+            }
+
+            return acc;
+          }, {}),
         });
       },
     },
@@ -68,6 +77,7 @@ export function initTabUrlListener() {
     const config = await getConfig();
     let needForceUpdate = false;
     const params = Object.fromEntries(new URLSearchParams(tab.url?.split('?')[1]));
+    const [path] = parseURLSearchParams(tab.url);
 
     {
       const kvList = config?.tabPinMap?.[tabId];
@@ -81,7 +91,6 @@ export function initTabUrlListener() {
     }
 
     {
-      const path = tab.url?.split('?')[0] || '';
       const kvList = config?.tabLockMap?.[path];
 
       kvList?.forEach((kv) => {
@@ -93,7 +102,7 @@ export function initTabUrlListener() {
     }
 
     if (needForceUpdate) {
-      const newUrl = `${tab.url?.split('?')[0]}?${new URLSearchParams(params)}`;
+      const newUrl = stringifyURLSearchParams(path, params);
 
       chrome.tabs.update(tabId, { url: newUrl });
     } else {
