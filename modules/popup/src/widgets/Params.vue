@@ -11,10 +11,10 @@
             <LockOnIcon v-if="kv.lockType === configProto.LockType.Pinned" size="20" class="text-fg-0" />
             <LockOffIcon v-else size="20" class="text-fg-1" />
           </div>
-          <Input v-model="kv.key" class="min-w-0 text-fg-0" placeholder="input key..." />
+          <Input v-model="kv.key" class="min-w-0 text-fg-0" :placeholder="`${i18n('input_key')}...`" />
         </div>
         <div class="flex items-center">
-          <Input v-model="kv.value" class="min-w-0" placeholder="input value..." />
+          <Input v-model="kv.value" class="min-w-0" :placeholder="`${i18n('input_value')}...`" />
           <div class="ml-4 shrink-0 c-active-cover" @click="onDeleteKv(kv)">
             <MinusCircleIcon size="20" class="text-fg-0" />
           </div>
@@ -22,8 +22,8 @@
       </template>
     </div>
     <div class="self-end flex gap-8 mt-16">
-      <Button @click="onClickAdd">Add</Button>
-      <Button theme="success" @click="onClickSubmit">Reload</Button>
+      <Button @click="onClickAdd">{{ i18n('add_param') }}</Button>
+      <Button theme="success" @click="onClickSubmit">{{ i18n('reload_page') }}</Button>
     </div>
   </div>
 </template>
@@ -33,6 +33,7 @@ import { Input, Button } from 'tdesign-vue-next';
 import { MinusCircleIcon, LockOnIcon, LockOffIcon, UserLockedIcon, UserUnlockedIcon } from 'tdesign-icons-vue-next';
 import { configProto } from 'common';
 import { mergeKVListInto, kvListToRecord } from '@rosmarinus/common-utils';
+import { i18n } from '../utils/i18n';
 
 const props = defineProps<{ kvItemList: configProto.ParamKV[] }>();
 const emit = defineEmits<{

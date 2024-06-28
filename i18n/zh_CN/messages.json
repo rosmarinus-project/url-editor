@@ -1,89 +1,17 @@
 {
-  "search_title": {
-    "message": "搜索"
+  "add_param": {
+    "message": "新增参数"
   },
-  "page_title": {
-    "message": "新标签页"
+  "reload_page": {
+    "message": "刷新页面"
   },
-  "recent_close_title": {
-    "message": "最近关闭的网页"
+  "input_value": {
+    "message": "输入值"
   },
-  "recommend_website_title": {
-    "message": "经常访问的网站"
+  "input_key": {
+    "message": "输入键"
   },
-  "clear": {
-    "message": "清空"
-  },
-  "search_input_placeholder": {
-    "message": "输入搜索的内容"
-  },
-  "delete": {
-    "message": "删除"
-  },
-  "setting": {
-    "message": "设置"
-  },
-  "setting_subtitle_base": {
-    "message": "基础功能"
-  },
-  "setting_subtitle_search": {
-    "message": "搜索"
-  },
-  "setting_sub_select_content_recent_closed": {
-    "message": "最近关闭记录"
-  },
-  "setting_sub_select_content_recommend_website": {
-    "message": "网站使用推荐"
-  },
-  "setting_module_name": {
-    "message": "模块"
-  },
-  "setting_sub_content_recent_closed": {
-    "message": "开启最近关闭记录"
-  },
-  "setting_sub_content_default_search_engine": {
-    "message": "默认搜索引擎"
-  },
-  "baidu": {
-    "message": "百度"
-  },
-  "google": {
-    "message": "Google"
-  },
-  "bing": {
-    "message": "必应"
-  },
-  "history_record": {
-    "message": "历史记录"
-  },
-  "search_sug": {
-    "message": "搜索建议"
-  },
-  "tab_sug": {
-    "message": "标签页"
-  },
-  "reading_list_sug": {
-    "message": "阅读清单"
-  },
-  "bookmark_sug": {
-    "message": "书签"
-  },
-  "history_sug": {
-    "message": "浏览记录"
-  },
-  "close": {
-    "message": "关闭"
-  },
-  "appearance": {
-    "message": "外观"
-  },
-  "light_dark_mode": {
-    "message": "深浅模式"
-  },
-  "setting_sub_content_light_dark_auto": {
-    "message": "跟随系统"
-  },
-  "setting_sub_content_light_dark_manual": {
-    "message": "手动切换"
+  "app_name": {
+    "message": "URL 编辑器"
   }
 }

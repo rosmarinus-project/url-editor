@@ -1,89 +1,17 @@
 {
-  "search_title": {
-    "message": "Search"
+  "add_param": {
+    "message": "Add"
   },
-  "page_title": {
-    "message": "New Tab"
+  "reload_page": {
+    "message": "Reload"
   },
-  "recent_close_title": {
-    "message": "Recently Closed"
+  "input_value": {
+    "message": "input value"
   },
-  "recommend_website_title": {
-    "message": "Recommend"
+  "input_key": {
+    "message": "input key"
   },
-  "clear": {
-    "message": "Clear"
-  },
-  "search_input_placeholder": {
-    "message": "Search here"
-  },
-  "delete": {
-    "message": "Delete"
-  },
-  "setting": {
-    "message": "Setting"
-  },
-  "setting_subtitle_base": {
-    "message": "Basic"
-  },
-  "setting_subtitle_search": {
-    "message": "Search"
-  },
-  "setting_module_name": {
-    "message": "Module"
-  },
-  "setting_sub_content_recent_closed": {
-    "message": "Recently Closed"
-  },
-  "setting_sub_content_default_search_engine": {
-    "message": "Search engine"
-  },
-  "baidu": {
-    "message": "Baidu"
-  },
-  "google": {
-    "message": "Google"
-  },
-  "bing": {
-    "message": "Bing"
-  },
-  "history_record": {
-    "message": "History"
-  },
-  "search_sug": {
-    "message": "Search Suggestion"
-  },
-  "tab_sug": {
-    "message": "Tab"
-  },
-  "reading_list_sug": {
-    "message": "Reading List"
-  },
-  "bookmark_sug": {
-    "message": "Bookmarks"
-  },
-  "history_sug": {
-    "message": "History"
-  },
-  "setting_sub_select_content_recent_closed": {
-    "message": "Recently Closed"
-  },
-  "setting_sub_select_content_recommend_website": {
-    "message": "Website Recommend"
-  },
-  "close": {
-    "message": "Close"
-  },
-  "appearance": {
-    "message": "Appearance"
-  },
-  "light_dark_mode": {
-    "message": "Light/Dark Mode"
-  },
-  "setting_sub_content_light_dark_auto": {
-    "message": "System"
-  },
-  "setting_sub_content_light_dark_manual": {
-    "message": "Manual"
+  "app_name": {
+    "message": "URL Editor"
   }
 }
