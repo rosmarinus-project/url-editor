@@ -1,6 +1,6 @@
 {
   "name": "url-editor",
-  "version": "1.0.3",
+  "version": "1.0.1",
   "description": "chrome extension for editing url",
   "scripts": {
     "build": "pnpm build:console",

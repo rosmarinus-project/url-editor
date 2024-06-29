@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Url Editor",
   "description": "easy for editing url",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "icons": {
     "16": "assets/logo_1x.png",
     "32": "assets/logo_2x.png",
