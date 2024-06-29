@@ -2,7 +2,7 @@
   <div>
     <div class="text-font-l font-medium text-fg-0 flex items-center">
       <div>{{ i18n('app_name') }}</div>
-      <div v-if="githubUrl" class="ml-12 c-active-cover" @click="onClickGithub">
+      <div v-if="githubUrl" class="ml-12 c-active-cover flex" @click="onClickGithub">
         <LogoGithubFilledIcon size="20" />
       </div>
     </div>
