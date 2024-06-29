@@ -13,6 +13,7 @@ declare module 'process' {
       interface ProcessEnv {
         IS_DEV: boolean;
         IS_PROD: boolean;
+        GITHUB_URL?: string;
       }
     }
   }

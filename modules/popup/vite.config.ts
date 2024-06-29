@@ -1,4 +1,5 @@
 import { resolve } from 'path';
+import { readFileSync } from 'fs';
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
@@ -23,5 +24,6 @@ export default defineConfig({
   define: {
     'process.env.IS_DEV': process.env.NODE_ENV === 'development',
     'process.env.IS_PROD': process.env.NODE_ENV !== 'development',
+    'process.env.GITHUB_URL': JSON.stringify(JSON.parse(readFileSync('../../package.json', 'utf8')).repository.url),
   },
 });
