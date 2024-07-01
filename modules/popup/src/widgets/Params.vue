@@ -32,12 +32,12 @@ import { watch, ref } from 'vue';
 import { Input, Button } from 'tdesign-vue-next';
 import { MinusCircleIcon, LockOnIcon, LockOffIcon, UserLockedIcon, UserUnlockedIcon } from 'tdesign-icons-vue-next';
 import { configProto } from 'common';
-import { mergeKVListInto, kvListToRecord } from '@rosmarinus/common-utils';
+import { mergeKVListInto } from '@rosmarinus/common-utils';
 import { i18n } from '../utils/i18n';
 
 const props = defineProps<{ kvItemList: configProto.ParamKV[] }>();
 const emit = defineEmits<{
-  submit: [value: Record<string, string>];
+  submit: [value: configProto.ParamKV[]];
   kvLockTypeChange: [kv: configProto.ParamKV];
 }>();
 
@@ -55,7 +55,7 @@ watch(
 );
 
 function onClickSubmit() {
-  emit('submit', kvListToRecord(kvList.value));
+  emit('submit', kvList.value);
 }
 
 function onClickAdd() {

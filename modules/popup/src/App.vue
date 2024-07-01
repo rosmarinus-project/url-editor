@@ -21,6 +21,7 @@ import {
   recordToKVList,
   addKVToList,
   removeKVFromList,
+  kvListToRecord,
 } from '@rosmarinus/common-utils';
 import { tabUrlApi, configProto, configApi } from 'common';
 import Empty from './widgets/Empty.vue';
@@ -62,7 +63,9 @@ const kvList = computed(() => {
   return list;
 });
 
-function onSubmitParamsChange(params: Record<string, string>) {
+function onSubmitParamsChange(kvList: configProto.ParamKV[]) {
+  onKVListLockTypeChange(kvList);
+  const params = kvListToRecord(kvList);
   const url = stringifyURLSearchParams(path.value, params);
   const tabId = tab.value?.id;
 
@@ -73,30 +76,40 @@ function onSubmitParamsChange(params: Record<string, string>) {
   window.close();
 }
 
-function onKVLockTypeChange(kv: configProto.ParamKV) {
+function onKVListLockTypeChange(kvList: configProto.ParamKV[]) {
   const pinKvList = (() => {
-    const list = config.value?.tabPinMap?.[tab.value?.id || -1] ?? [];
+    let list = config.value?.tabPinMap?.[tab.value?.id || -1] ?? [];
 
-    if (kv.lockType === configProto.LockType.Pinned) {
-      return addKVToList(list, kv);
-    }
+    kvList.forEach((kv) => {
+      if (kv.lockType === configProto.LockType.Pinned) {
+        list = addKVToList(list, kv);
+      } else {
+        list = removeKVFromList(list, kv);
+      }
+    });
 
-    return removeKVFromList(list, kv);
+    return list;
   })();
 
   const lockKvList = (() => {
-    const list = config.value?.tabLockMap?.[path.value] ?? [];
+    let list = config.value?.tabLockMap?.[path.value] ?? [];
 
-    if (kv.lockType === configProto.LockType.Locked) {
-      return addKVToList(list, kv);
-    }
+    kvList.forEach((kv) => {
+      if (kv.lockType === configProto.LockType.Locked) {
+        list = addKVToList(list, kv);
+      } else {
+        list = removeKVFromList(list, kv);
+      }
+    });
 
-    return removeKVFromList(list, kv);
+    return list;
   })();
 
   const tabId = tab.value?.id ?? -1;
 
-  params.value[kv.key] = kv.value;
+  kvList.forEach((kv) => {
+    params.value[kv.key] = kv.value;
+  });
   config.value = {
     ...config.value,
     tabPinMap: {
@@ -117,6 +130,10 @@ function onKVLockTypeChange(kv: configProto.ParamKV) {
       [path.value]: lockKvList,
     },
   });
+}
+
+function onKVLockTypeChange(kv: configProto.ParamKV) {
+  onKVListLockTypeChange([kv]);
 }
 
 watch(
