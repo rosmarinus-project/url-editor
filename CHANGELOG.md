@@ -1,3 +1,10 @@
+## <small>1.0.2 (2024-7-1)</small>
+
+* chore: logo change ([82c9479](https://github.com/rosmarinus-project/url-editor/commit/82c9479))
+* fix: reload new param when lock ([5a7e4d8](https://github.com/rosmarinus-project/url-editor/commit/5a7e4d8))
+
+
+
 ## <small>1.0.1 (2024-06-29)</small>
 
 * fix: add github url ([4dfbc29](https://github.com/rosmarinus-project/url-editor/commit/4dfbc29))
