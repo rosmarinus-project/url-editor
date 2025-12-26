@@ -1,3 +1,10 @@
+## 2.0.0 (2025-12-26)
+
+* fix: enter to refresh ([8a9250f](https://github.com/rosmarinus-project/url-editor/commit/8a9250f))
+* chore: add shop logo size ([7105a4a](https://github.com/rosmarinus-project/url-editor/commit/7105a4a))
+
+
+
 ## <small>1.0.2 (2024-7-1)</small>
 
 * chore: logo change ([82c9479](https://github.com/rosmarinus-project/url-editor/commit/82c9479))
