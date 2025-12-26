@@ -14,7 +14,7 @@
           <Input v-model="kv.key" class="min-w-0 text-fg-0" :placeholder="`${i18n('input_key')}...`" />
         </div>
         <div class="flex items-center">
-          <Input v-model="kv.value" class="min-w-0" :placeholder="`${i18n('input_value')}...`" />
+          <Input v-model="kv.value" class="min-w-0" :placeholder="`${i18n('input_value')}...`" @enter="onClickSubmit" />
           <div class="ml-4 shrink-0 c-active-cover" @click="onDeleteKv(kv)">
             <MinusCircleIcon size="20" class="text-fg-0" />
           </div>
