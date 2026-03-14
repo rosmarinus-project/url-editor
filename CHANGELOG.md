@@ -1,3 +1,9 @@
+## <small>2.0.1 (2026-03-14)</small>
+
+* feat: support json ([4807c60](https://github.com/rosmarinus-project/url-editor/commit/4807c60))
+
+
+
 ## 2.0.0 (2025-12-26)
 
 * fix: enter to refresh ([8a9250f](https://github.com/rosmarinus-project/url-editor/commit/8a9250f))
