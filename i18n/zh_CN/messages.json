@@ -13,5 +13,17 @@
   },
   "app_name": {
     "message": "URL 编辑器"
+  },
+  "json_edit": {
+    "message": "JSON 编辑"
+  },
+  "json_save": {
+    "message": "保存"
+  },
+  "json_error": {
+    "message": "JSON 格式错误"
+  },
+  "json_back": {
+    "message": "返回"
   }
 }

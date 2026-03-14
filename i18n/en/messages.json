@@ -13,5 +13,17 @@
   },
   "app_name": {
     "message": "URL Editor"
+  },
+  "json_edit": {
+    "message": "JSON Edit"
+  },
+  "json_save": {
+    "message": "Save"
+  },
+  "json_error": {
+    "message": "Invalid JSON"
+  },
+  "json_back": {
+    "message": "Back"
   }
 }
